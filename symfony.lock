@@ -1,4 +1,7 @@
 {
+    "myclabs/php-enum": {
+        "version": "1.6.4"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -74,6 +77,9 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.10.0"
     },
+    "symfony/polyfill-php72": {
+        "version": "v1.10.0"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -82,6 +88,9 @@
             "version": "4.2",
             "ref": "5374e24d508ba8fd6ba9eb15170255fdb778316a"
         }
+    },
+    "symfony/var-dumper": {
+        "version": "v4.2.1"
     },
     "symfony/var-exporter": {
         "version": "v4.2.1"
