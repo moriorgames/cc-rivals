@@ -9,22 +9,37 @@ use App\Enum\ArmyType;
 
 class InMemoryArmyRepository implements IArmyRepository
 {
+    public function findAll(): array
+    {
+        $armies = [];
+        foreach (ArmyFixtures::DATA as $data) {
+            $armies[] = $this->hydrate($data);
+        }
+
+        return $armies;
+    }
+
     public function findByName(string $name): Army
     {
-        foreach (ArmyFixtures::DATA as $d) {
+        foreach (ArmyFixtures::DATA as $data) {
 
-            if ($d['name'] === $name) {
+            if ($data['name'] === $name) {
 
-                return new Army(
-                    $d['name'],
-                    new ArmyType($d['type']),
-                    $d['health'],
-                    $d['dps'],
-                    new ArmySpeed($d['speed']),
-                    $d['cost'],
-                    $d['strong']
-                );
+                return $this->hydrate($data);
             }
         }
+    }
+
+    private function hydrate(array $data): army
+    {
+        return new Army(
+            $data['name'],
+            new ArmyType($data['type']),
+            $data['health'],
+            $data['dps'],
+            new ArmySpeed($data['speed']),
+            $data['cost'],
+            $data['strong']
+        );
     }
 }

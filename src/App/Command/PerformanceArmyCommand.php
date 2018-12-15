@@ -2,8 +2,11 @@
 
 namespace App\Command;
 
+use App\Entity\Army;
 use App\Repository\InMemoryArmyRepository;
+use App\Services\PerformanceCalculator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,18 +24,27 @@ class PerformanceArmyCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln([
-            'User Creator',
-            '============',
+            'Performance Calculation',
+            '=======================',
             '',
         ]);
 
+        $performanceCalculator = new PerformanceCalculator;
         $armyRepository = new InMemoryArmyRepository;
+        $tableData = [];
+        /** @var Army $army */
+        foreach ($armyRepository->findAll() as $army) {
+            $healthPerf = $performanceCalculator->calculateByHealth($army);
+            $dpsPerf = $performanceCalculator->calculateByDps($army);
+            $tableData[] = [$army->getName(), $healthPerf, $dpsPerf];
+        }
 
-        dump($armyRepository->findByName('riflemen'));
+        $table = new Table($output);
+        $table
+            ->setHeaders(['Name', 'Health perf.', 'Dps perf.'])
+            ->setRows($tableData);
+        $table->render();
 
-        $output->writeln('Whoa!');
-
-        $output->write('You are about to ');
-        $output->write('create a user.');
+        $output->write('');
     }
 }
