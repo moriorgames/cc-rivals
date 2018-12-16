@@ -3,6 +3,7 @@
 use App\Entity\Army;
 use App\Enum\ArmySpeed;
 use App\Enum\ArmyType;
+use App\Enum\Faction;
 use App\Services\PerformanceCalculator;
 use PHPUnit\Framework\TestCase;
 
@@ -15,11 +16,13 @@ class PerformanceCalculatorTest extends TestCase
         parent::setUp();
         $this->army = new Army(
             0,
+            Faction::GDI(),
             ArmyType::INFANTRY(),
             700,
             200,
             ArmySpeed::FAST(),
             10,
+            [],
             []
         );
     }
