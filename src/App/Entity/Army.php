@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enum\ArmySpeed;
 use App\Enum\ArmyType;
 use App\Enum\Faction;
+use App\Enum\Target;
 
 class Army
 {
@@ -15,8 +16,8 @@ class Army
     private $dps;
     private $speed;
     private $cost;
-    private $strong;
-    private $targets;
+    private $strong = [];
+    private $targets = [];
 
     public function __construct(
         string $name,
@@ -25,9 +26,7 @@ class Army
         int $health,
         int $dps,
         ArmySpeed $speed,
-        int $cost,
-        array $strong,
-        array $targets
+        int $cost
     )
     {
         $this->name = $name;
@@ -37,13 +36,16 @@ class Army
         $this->dps = $dps;
         $this->speed = $speed;
         $this->cost = $cost;
-        $this->strong = $strong;
-        $this->targets = $targets;
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getFaction(): Faction
+    {
+        return $this->faction;
     }
 
     public function getType(): ArmyType
@@ -71,8 +73,23 @@ class Army
         return $this->cost;
     }
 
+    public function addStrong(ArmyType $armyType): void
+    {
+        array_push($this->strong, $armyType);
+    }
+
     public function getStrong(): array
     {
         return $this->strong;
+    }
+
+    public function addTarget(Target $target): void
+    {
+        array_push($this->targets, $target);
+    }
+
+    public function getTargets(): array
+    {
+        return $this->targets;
     }
 }

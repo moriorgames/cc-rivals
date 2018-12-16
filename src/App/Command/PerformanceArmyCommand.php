@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Army;
-use App\Repository\InMemoryArmyRepository;
+use App\Repository\IArmyRepository;
 use App\Services\PerformanceCalculator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -13,6 +13,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PerformanceArmyCommand extends Command
 {
     protected static $defaultName = 'app:performance-army';
+
+    private $performanceCalculator;
+
+    private $armyRepository;
+
+    public function __construct(PerformanceCalculator $performanceCalculator, IArmyRepository $armyRepository)
+    {
+        $this->performanceCalculator = $performanceCalculator;
+        $this->armyRepository = $armyRepository;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -29,13 +41,11 @@ class PerformanceArmyCommand extends Command
             '',
         ]);
 
-        $performanceCalculator = new PerformanceCalculator;
-        $armyRepository = new InMemoryArmyRepository;
         $tableData = [];
         /** @var Army $army */
-        foreach ($armyRepository->findAll() as $army) {
-            $healthPerf = $performanceCalculator->calculateByHealth($army);
-            $dpsPerf = $performanceCalculator->calculateByDps($army);
+        foreach ($this->armyRepository->findAll() as $army) {
+            $healthPerf = $this->performanceCalculator->calculateByHealth($army);
+            $dpsPerf = $this->performanceCalculator->calculateByDps($army);
             $tableData[] = [$army->getName(), $healthPerf, $dpsPerf];
         }
 
