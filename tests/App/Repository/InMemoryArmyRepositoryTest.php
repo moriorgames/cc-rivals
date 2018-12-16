@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryArmyRepositoryTest extends TestCase
 {
+    /** @var InMemoryArmyRepository */
     private $sut;
 
     public function setUp()
@@ -23,6 +24,15 @@ class InMemoryArmyRepositoryTest extends TestCase
         $result = $this->sut->findByName('riflemen');
 
         $this->assertInstanceOf(Army::class, $result);
+    }
+
+    /**
+     * @test
+     * @expectedException App\Exceptions\EntityNotFoundException
+     */
+    public function will_throw_an_exception_on_no_existing_army()
+    {
+        $this->sut->findByName('blaaa');
     }
 
     /**
